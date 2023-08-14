@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: ./../
+      dockerfile: ./docker/php-fpm/Dockerfile
+      args:
+        - PUID=1000
+        - PGID=1000
+    volumes:
+      - ./../:/var/www/
+    restart: always
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+    volumes:
+      - ..:/var/www:rw
+    depends_on:
+      - php-fpm
+    ports:
+      - "88:80"
+    restart: always
