@@ -2,6 +2,13 @@
 
 A default Dockerfile and docker-compose for quick deployment of the environment for PHP application.
 
+- PHP 8.2
+- Nginx
+- Postgresql
+- Elasticsearch
+- docker compose
+
+## Project structure
 ```
 .
 ├── docker
@@ -11,10 +18,12 @@ A default Dockerfile and docker-compose for quick deployment of the environment 
 │   │   └── nginx.conf
 │   ├── php-fpm
 │   │   └── Dockerfile
-│   └── docker-compose.yml
-├── Makefile
+│   └── postgres
+│       └── Dockerfile
+├── docker-compose.yml
 └── README.md
 ```
+
 
 ## Installing the Template
 ```
@@ -23,6 +32,27 @@ git clone https://github.com/BlackSou/docker-php-template.git
 
 ## Building the Docker image for your application
 ```
-make dc_build
+docker-compose build
 ```
-Other commands can be found in the Makefile
+### Other commands 
+```
+docker-compose up -d
+```
+```
+docker-compose start
+```
+```
+docker-compose stop
+```
+```
+docker-compose ps
+```
+```
+docker-compose logs -f
+```
+```
+docker-compose rm
+```
+```
+docker-compose exec -ti php-fpm bash
+```
