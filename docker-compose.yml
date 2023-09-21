@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  php-fpm:
+    container_name: php-fpm
+    build: ./docker/php-fpm/
+    volumes:
+      - .:/var/www/
+      - ./docker/php-fpm/ini:/usr/local/etc/php
+    depends_on:
+      - postgres
+      - elasticsearch
+    restart: always
+    networks:
+        - mynetwork
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./docker/nginx
+    volumes:
+      - .:/var/www:rw
+    depends_on:
+      - php-fpm
+    ports:
+      - "88:80"
+    restart: always
+    networks:
+      - mynetwork
+
+  postgres:
+    container_name: postgres
+    build:
+      context: ./docker/postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: symfony
+      POSTGRES_USER: symfony
+      POSTGRES_PASSWORD: symfony
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - db_data:/var/lib/postgresql/data:rw
+    networks:
+        - mynetwork
+
+  elasticsearch:
+      container_name: elasticsearch
+      image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+      ports:
+          - "9200:9200"
+          - "9300:9300"
+      environment:
+          discovery.type: single-node
+      restart: always
+      networks:
+          - mynetwork
+
+volumes:
+  db_data:
+
+networks:
+    mynetwork:
