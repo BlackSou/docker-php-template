@@ -3,10 +3,11 @@ version: "3.8"
 services:
   php-fpm:
     container_name: php-fpm
-    build: ./docker/php-fpm/
+    build:
+      dockerfile: ./docker/php-fpm/php82/Dockerfile
     volumes:
       - .:/var/www/
-      - ./docker/php-fpm/ini:/usr/local/etc/php
+      - ./docker/php-fpm/php82/ini:/usr/local/etc/php
     depends_on:
       - postgres
       - elasticsearch
